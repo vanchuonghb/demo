@@ -1,0 +1,29 @@
+spring:
+  application:
+    name: Test
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+      use-new-id-generator-mappings: true
+    generate-ddl: true
+    properties:
+      dialect: org.hibernate.dialect.MariaDB53Dialect
+
+  session:
+    store-type: none
+
+  datasource:
+    driverClassName: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://localhost:3306/demo
+    username: root
+    password: password
+
+    tomcat:
+      max-idle: 2
+      max-active: 3
+    type: com.zaxxer.hikari.HikariDataSource
+
+server:
+  port: 8080
+  connection-timeout: 300000
