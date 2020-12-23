@@ -15,9 +15,9 @@ spring:
 
   datasource:
     driverClassName: org.mariadb.jdbc.Driver
-    url: jdbc:mariadb://localhost:3306/demo
+    url: jdbc:mariadb://localhost:3306/demo-1
     username: root
-    password: 1
+    password: password
 
     tomcat:
       max-idle: 2

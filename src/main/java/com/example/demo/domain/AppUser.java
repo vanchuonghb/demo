@@ -1,6 +1,13 @@
 package com.example.demo.domain;
 
+import org.hibernate.annotations.NaturalId;
+
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "App_User", //
@@ -21,6 +28,17 @@ public class AppUser {
 
     @Column(name = "Enabled", length = 1, nullable = false)
     private boolean enabled;
+
+    @NotBlank
+    @Size(max = 40)
+    private String name;
+
+    @NaturalId
+    @NotBlank
+    @Size(max = 40)
+    @Email
+    private String email;
+
 
     public Long getUserId() {
         return userId;
@@ -52,5 +70,32 @@ public class AppUser {
 
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public AppUser() {
+
+    }
+
+    public AppUser(String name, String userName, String email, String password) {
+        this.name = name;
+        this.userName = userName;
+        this.email = email;
+        this.encrytedPassword = password;
     }
 }

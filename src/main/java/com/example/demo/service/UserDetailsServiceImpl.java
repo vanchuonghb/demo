@@ -1,8 +1,8 @@
 package com.example.demo.service;
 
 import com.example.demo.domain.AppUser;
-import com.example.demo.repo.AppRoleDAO;
-import com.example.demo.repo.AppUserDAO;
+import com.example.demo.repo.AppRoleRepo;
+import com.example.demo.repo.AppUserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -19,14 +19,14 @@ import java.util.List;
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Autowired
-    private AppUserDAO appUserDAO;
+    private AppUserRepo appUserRepo;
 
     @Autowired
-    private AppRoleDAO appRoleDAO;
+    private AppRoleRepo appRoleRepo;
 
     @Override
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
-        AppUser appUser = this.appUserDAO.findUserAccount(userName);
+        AppUser appUser = this.appUserRepo.findUserAccount(userName);
 
         if (appUser == null) {
             System.out.println("User not found! " + userName);
@@ -36,7 +36,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         System.out.println("Found User: " + appUser);
 
         // [ROLE_USER, ROLE_ADMIN,..]
-        List<String> roleNames = this.appRoleDAO.getRoleNames(appUser.getUserId());
+        List<String> roleNames = this.appRoleRepo.getRoleNames(appUser.getUserId());
 
         List<GrantedAuthority> grantList = new ArrayList<GrantedAuthority>();
         if (roleNames != null) {

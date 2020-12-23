@@ -6,12 +6,9 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
-import javax.transaction.Transactional;
 import java.util.List;
 
-@Repository
-@Transactional
-public class AppRoleDAO {
+public class AppRoleRepoCustomImpl implements AppRoleRepoCustom{
 
     @Autowired
     private EntityManager entityManager;
@@ -24,5 +21,4 @@ public class AppRoleDAO {
         query.setParameter("userId", userId);
         return query.getResultList();
     }
-
 }

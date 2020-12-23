@@ -9,15 +9,9 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
-@EnableJpaRepositories("com.example.demo.repository")
+@EnableJpaRepositories(basePackages = {"com.example.demo.repo"})
 @EnableTransactionManagement
 public class DatabaseConfig {
-
-//    @Bean
-//    @ConfigurationProperties("app.datasource")
-//    public DataSourceProperties dataSourceProperties() {
-//        return new DataSourceProperties();
-//    }
 
     @Bean
     @ConfigurationProperties("spring.datasource")
