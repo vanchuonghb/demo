@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.config.JwtAuthenticationEntryPoint;
 import com.example.demo.config.JwtTokenProvider;
 import com.example.demo.domain.AppUser;
 import com.example.demo.dto.ResponseData;
@@ -10,6 +11,8 @@ import com.example.demo.payload.SignUpRequest;
 import com.example.demo.repo.AppRoleRepo;
 import com.example.demo.repo.AppUserRepo;
 import com.example.demo.service.UserServiceDemo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -19,6 +22,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -45,7 +49,12 @@ public class DemoController {
     PasswordEncoder passwordEncoder;
 
     @Autowired
+    private PersistentTokenRepository persistentTokenRepository;
+
+    @Autowired
     private JwtTokenProvider tokenProvider;
+
+    private static final Logger logger = LoggerFactory.getLogger(JwtAuthenticationEntryPoint.class);
 
     @GetMapping("/ping")
     public ResponseEntity<?> ping() {
@@ -59,6 +68,37 @@ public class DemoController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(ResponseData.success("Thanh cong", userServiceDemo.loadAllData()));
+    }
+
+    @GetMapping("/userAccountInfo")
+    public ResponseEntity<ResponseData> success() {
+        logger.info("login successful");
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(ResponseData.success("Thanh cong", userServiceDemo.loadAllData()));
+    }
+
+    @GetMapping("/403")
+    public ResponseEntity<ResponseData> notFound() {
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(ResponseData.fail("Access Denied !"));
+    }
+
+    @GetMapping("/logout")
+    public ResponseEntity<ResponseData> signOut() {
+        persistentTokenRepository.removeUserTokens("admin");
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(ResponseData.success("Sign out successful !"));
+    }
+
+    @GetMapping("/logoutSuccessful")
+    public ResponseEntity<ResponseData> logoutSuccessful() {
+        logger.info("Sign out successfully");
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(ResponseData.success("Sign out successfully !"));
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
